@@ -9,11 +9,7 @@ import org.http4s.implicits.http4sKleisliResponseSyntaxOptionT
 import org.http4s._
 import org.http4s.server.staticcontent._
 
-trait IndexService[F[_]] {
-  def routes: HttpRoutes[F]
-}
-
-object Backend extends IOApp {
+object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
     val server = for {
       blocker <- Blocker[IO]
