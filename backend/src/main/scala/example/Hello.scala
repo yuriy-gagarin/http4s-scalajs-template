@@ -7,19 +7,10 @@ import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.dsl.Http4sDsl
 import org.http4s.implicits.http4sKleisliResponseSyntaxOptionT
 import org.http4s._
+import org.http4s.server.staticcontent._
 
 trait IndexService[F[_]] {
   def routes: HttpRoutes[F]
-}
-
-object IndexService {
-  def create[F[_] : Effect : ContextShift](blocker: Blocker): IndexService[F] = new IndexService[F] with Http4sDsl[F] {
-    def routes: HttpRoutes[F] =
-      HttpRoutes.of {
-        case req @ GET -> Root => StaticFile.fromResource("index.html", blocker, Some(req))
-          .getOrElseF(NotFound())
-      }  
-  }
 }
 
 object Backend extends IOApp {
@@ -27,11 +18,11 @@ object Backend extends IOApp {
     val server = for {
       blocker <- Blocker[IO]
 
-      val indexService = IndexService.create[IO](blocker)
+      val static = fileService[IO](FileService.Config("static", blocker))
 
       server  <- BlazeServerBuilder[IO](global)
         .bindHttp(8888, "0.0.0.0")
-        .withHttpApp(indexService.routes.orNotFound)
+        .withHttpApp(static.orNotFound)
         .resource
         
     } yield server

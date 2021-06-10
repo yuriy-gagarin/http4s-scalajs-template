@@ -10,15 +10,18 @@ lazy val backend = (project in file("backend"))
     name := "backend",
     libraryDependencies ++= Seq(scalaTest % Test, cats, catsEffect) ++ http4s,
     addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.0" cross CrossVersion.full),
-    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
-    )
+    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1"),
+    Compile / unmanagedResourceDirectories += baseDirectory.value / ".." / "static"
+  )
     
 lazy val frontend = (project in file("frontend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "frontend",
     scalaJSUseMainModuleInitializer := true,
-    libraryDependencies += scalaTest % Test
+    libraryDependencies += scalaTest % Test,
+    Compile / fullOptJS / artifactPath := baseDirectory.value / ".." / "static" / "main.js",
+    Compile / fastOptJS / artifactPath := baseDirectory.value / ".." / "static" / "main.js"
   )
 
 // See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
