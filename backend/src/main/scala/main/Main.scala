@@ -14,7 +14,7 @@ object Main extends IOApp {
     val server = for {
       blocker <- Blocker[IO]
 
-      val static = fileService[IO](FileService.Config("static", blocker))
+      val static = fileService[IO](FileService.Config("../static", blocker))
 
       server  <- BlazeServerBuilder[IO](global)
         .bindHttp(8888, "0.0.0.0")
