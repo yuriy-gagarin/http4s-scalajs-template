@@ -1,6 +1,6 @@
 package example
 
-object Hello extends Greeting {
+object Main extends Greeting {
   def main(args: Array[String]): Unit = {
     println(greeting)
   }
