@@ -17,4 +17,7 @@ object Dependencies {
 
   lazy val catsEffect =
     "org.typelevel" %% "cats-effect" % "2.4.1"
+
+  lazy val pureconfig =
+    "com.github.pureconfig" %% "pureconfig" % "0.16.0"
 }
