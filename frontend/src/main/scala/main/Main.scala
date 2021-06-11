@@ -1,11 +1,17 @@
-package example
+package main
 
-object Main extends Greeting {
+import org.scalajs.dom
+import scala.concurrent.ExecutionContext.Implicits.global
+
+object Main {
   def main(args: Array[String]): Unit = {
-    println(greeting)
-  }
-}
+    val server = dom.document.getElementById("server")
+    val client = dom.document.getElementById("client")
 
-trait Greeting {
-  lazy val greeting: String = "hello from js"
+    client.innerText = Common.hello
+
+    dom.ext.Ajax.get("/hello").map { req =>
+      server.innerText = req.responseText
+    }
+  }
 }
