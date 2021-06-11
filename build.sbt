@@ -31,8 +31,8 @@ lazy val frontend = (project in file("frontend"))
   .settings(
     name := "frontend",
     scalaJSUseMainModuleInitializer := true,
-    Compile / fullOptJS / artifactPath := baseDirectory.value / ".." / "static" / "main.js",
-    Compile / fastOptJS / artifactPath := baseDirectory.value / ".." / "static" / "main.js",
+    Compile / fullOptJS / artifactPath := baseDirectory.value / ".." / "static" / "js" / "main.js",
+    Compile / fastOptJS / artifactPath := baseDirectory.value / ".." / "static" / "js" / "main.js",
     libraryDependencies ++= Seq(
       cats,
       catsEffect,
