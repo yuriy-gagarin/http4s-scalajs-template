@@ -17,17 +17,20 @@ lazy val backend = (project in file("backend"))
     libraryDependencies ++= Dependencies.jvm.value ++ Dependencies.shared.value,
     reStart := (reStart dependsOn (frontend / Compile / fastOptJS)).evaluated,
     Compile / compile := ((Compile / compile) dependsOn (frontend / Compile / fullOptJS)).value,
+    Compile / resources += (frontend / Compile / fastOptJS).value.data
   )
   .dependsOn(common.jvm)
 
 lazy val frontend = (project in file("frontend"))
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin)
   .settings(
     name := "frontend",
     scalaJSUseMainModuleInitializer := true,
-    Compile / fullOptJS / artifactPath := baseDirectory.value / ".." / "static" / "js" / "main.js",
-    Compile / fastOptJS / artifactPath := baseDirectory.value / ".." / "static" / "js" / "main.js",
-    libraryDependencies ++= Dependencies.js.value ++ Dependencies.shared.value
+    libraryDependencies ++= Dependencies.js.value ++ Dependencies.shared.value,
+    Compile / npmDependencies ++= Seq(
+      "react" -> "17.0.2",
+      "react-dom" -> "17.0.2"
+    )
   )
   .dependsOn(common.js)
 

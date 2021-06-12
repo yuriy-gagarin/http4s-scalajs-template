@@ -16,8 +16,8 @@ object Main extends IOApp.Simple {
     val server = for {
       blocker <- Blocker[IO]
 
-      val static = fileService[IO](FileService.Config(config.staticPath, blocker))
-      val hello  = Hello[IO].routes
+      val static = Static[IO](blocker).routes
+      val hello = Hello[IO].routes
 
       val service = (hello <+> static).orNotFound
 
