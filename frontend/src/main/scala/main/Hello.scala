@@ -4,6 +4,8 @@ import org.scalajs.dom
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.Success
+import scala.util.Failure
 
 object Hello {
 
@@ -24,10 +26,12 @@ object Hello {
 
     def init = getServerHello
 
-    private def getServerHello: AsyncCallback[Unit] = for {
-      req <- AsyncCallback.fromFuture(dom.ext.Ajax.get("/hello")) 
-      _   <- $.modStateAsync((state: State) => state.copy(serverResponse = Complete(req.responseText)))
-    } yield ()
+    private def getServerHello: AsyncCallback[Unit] =
+      AsyncCallback.fromFuture(dom.ext.Ajax.get("/hello")).flatMap { req =>
+        $.modStateAsync(_.copy(serverResponse = Complete(req.responseText)))
+      }.handleError { e =>
+        $.modStateAsync(_.copy(serverResponse = Error))
+      }
 
 
     def render(s: State): VdomElement = {
