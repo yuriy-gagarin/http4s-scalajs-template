@@ -5,11 +5,15 @@ ThisBuild / version          := "0.1.0-SNAPSHOT"
 ThisBuild / organization     := "com.example"
 ThisBuild / organizationName := "example"
 
+lazy val sharedSettings = {
+  addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.0" cross CrossVersion.full)
+  addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
+}
+
 lazy val common = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure) in file ("common"))
+  .settings(sharedSettings)
   .settings(
-    name := "common",
-    addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.0" cross CrossVersion.full),
-    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
+    name := "common"
   )
 
 lazy val backend = (project in file("backend"))
@@ -20,12 +24,10 @@ lazy val backend = (project in file("backend"))
       cats,
       catsEffect,
       pureconfig
-    ) ++ http4s,
-    addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.0" cross CrossVersion.full),
-    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
+    ) ++ http4s
   )
   .dependsOn(common.jvm)
-    
+
 lazy val frontend = (project in file("frontend"))
   .enablePlugins(ScalaJSPlugin)
   .settings(
@@ -38,9 +40,7 @@ lazy val frontend = (project in file("frontend"))
       catsEffect,
       "org.scala-js" %% "scalajs-test-bridge" % "1.4.0",
       "org.scala-js" %%% "scalajs-dom" % "1.1.0"
-    ),
-    addCompilerPlugin("org.typelevel" %% "kind-projector"     % "0.13.0" cross CrossVersion.full),
-    addCompilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
+    )
   )
   .dependsOn(common.js)
 
