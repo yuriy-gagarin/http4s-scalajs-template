@@ -6,9 +6,9 @@ import org.http4s._
 import org.http4s.implicits._
 import org.http4s.server.staticcontent._
 import org.http4s.server.blaze.BlazeServerBuilder
+import org.http4s.server.Router
 import pureconfig._
 import scala.concurrent.ExecutionContext.global
-import org.http4s.server.Router
 
 object Main extends IOApp.Simple {
   def run: IO[Unit] = {

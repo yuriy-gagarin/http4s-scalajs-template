@@ -15,9 +15,9 @@ lazy val backend = (project in file("backend"))
   .settings(
     name := "backend",
     libraryDependencies ++= Dependencies.jvm.value ++ Dependencies.shared.value,
-    reStart := (reStart dependsOn (frontend / Compile / fastOptJS)).evaluated,
-    Compile / compile := ((Compile / compile) dependsOn (frontend / Compile / fullOptJS)).value,
-    Compile / resources += (frontend / Compile / fastOptJS).value.data
+    reStart := (reStart dependsOn (frontend / Compile / fastOptJS / webpack)).evaluated,
+    Compile / compile := ((Compile / compile) dependsOn (frontend / Compile / fastOptJS / webpack)).value,
+    Compile / resources ++= (frontend / Compile / fastOptJS / webpack).value.map(_.data)
   )
   .dependsOn(common.jvm)
 
@@ -33,7 +33,5 @@ lazy val frontend = (project in file("frontend"))
     )
   )
   .dependsOn(common.js)
-
-// See https://www.scala-sbt.org/1.x/docs/Using-Sonatype.html for instructions on how to publish to Sonatype.
 
 Global / onLoad := (Command.process("project backend", _)) compose (Global / onLoad).value
