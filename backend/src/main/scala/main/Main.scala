@@ -8,6 +8,7 @@ import org.http4s.server.staticcontent._
 import org.http4s.server.blaze.BlazeServerBuilder
 import pureconfig._
 import scala.concurrent.ExecutionContext.global
+import org.http4s.server.Router
 
 object Main extends IOApp.Simple {
   def run: IO[Unit] = {
@@ -19,7 +20,7 @@ object Main extends IOApp.Simple {
       val static = Static[IO](blocker).routes
       val hello = Hello[IO].routes
 
-      val service = (hello <+> static).orNotFound
+      val service = Router("/hello" -> hello, "/" -> static).orNotFound
 
       server  <- BlazeServerBuilder[IO](global)
         .bindHttp(config.port, config.host)

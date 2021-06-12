@@ -19,7 +19,7 @@ object Static {
       case req @ GET -> Root =>
         StaticFile.fromResource("/index.html", blocker, Some(req)).getOrElseF(NotFound())
 
-      case req @ GET -> Root / path if List(".js", ".css", ".map", ".html").exists(path.endsWith) =>
+      case req @ GET -> Root / "assets" / path if List(".js", ".css", ".map", ".html").exists(path.endsWith) =>
         StaticFile.fromResource("/"+path, blocker, Some(req)).getOrElseF(NotFound())
     }
   }

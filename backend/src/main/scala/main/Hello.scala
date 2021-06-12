@@ -16,7 +16,7 @@ object Hello {
   def apply[F[_] : Sync] = new Hello[F] with Http4sDsl[F] {
 
     def routes: HttpRoutes[F] = HttpRoutes.of {
-      case GET -> Root / "hello" => Ok(Common.hello)
+      case GET -> Root => Ok(Common.hello)
     }
   }
 }
