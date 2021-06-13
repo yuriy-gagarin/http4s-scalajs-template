@@ -17,7 +17,8 @@ object Dependencies {
     "org.http4s"    %% "http4s-blaze-server" % http4sVersion,
     "org.http4s"    %% "http4s-blaze-client" % http4sVersion,
     "org.typelevel" %% "cats-effect" % "2.4.1",
-    "com.github.pureconfig" %% "pureconfig" % "0.16.0"
+    "com.github.pureconfig" %% "pureconfig" % "0.16.0",
+    "ch.qos.logback" % "logback-classic" % "1.2.3"
   ))
 
   val js = Def.setting(Seq(

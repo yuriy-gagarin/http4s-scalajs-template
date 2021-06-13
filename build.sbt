@@ -12,17 +12,18 @@ lazy val common = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pur
   )
 
 lazy val backend = (project in file("backend"))
+  .enablePlugins(WebScalaJSBundlerPlugin, Http4sWebPlugin)
   .settings(
     name := "backend",
     libraryDependencies ++= Dependencies.jvm.value ++ Dependencies.shared.value,
-    reStart := (reStart dependsOn (frontend / Compile / fastOptJS / webpack)).evaluated,
-    Compile / compile := ((Compile / compile) dependsOn (frontend / Compile / fastOptJS / webpack)).value,
-    Compile / resources ++= (frontend / Compile / fastOptJS / webpack).value.map(_.data)
+    scalaJSProjects := Seq(frontend),
+    Assets / pipelineStages := Seq(scalaJSPipeline),
+    Compile / compile := ((Compile / compile) dependsOn scalaJSPipeline).value,
   )
   .dependsOn(common.jvm)
 
 lazy val frontend = (project in file("frontend"))
-  .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin)
+  .enablePlugins(ScalaJSBundlerPlugin)
   .settings(
     name := "frontend",
     scalaJSUseMainModuleInitializer := true,
