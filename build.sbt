@@ -36,3 +36,7 @@ lazy val frontend = (project in file("frontend"))
   .dependsOn(common.js)
 
 Global / onLoad := (Command.process("project backend", _)) compose (Global / onLoad).value
+
+Global / scalaJSStage := {
+  if (sys.env.get("FULLOPT").fold(false)(_ == "true")) FullOptStage else FastOptStage
+}

@@ -12,12 +12,12 @@ import scala.concurrent.ExecutionContext.global
 
 object Main extends IOApp.Simple {
   def run: IO[Unit] = {
-    val config = ConfigSource.default.loadOrThrow[AppConfig]
+    implicit val config = ConfigSource.default.loadOrThrow[AppConfig]
 
     val server = for {
       blocker <- Blocker[IO]
 
-      val static = Static[IO](config.jsResource, blocker).routes
+      val static = Static[IO](blocker).routes
       val hello = Hello[IO].routes
 
       val service = Router("/hello" -> hello, "/" -> static).orNotFound
