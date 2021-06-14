@@ -5,6 +5,7 @@ import cats.syntax.semigroupk._
 import org.http4s._
 import org.http4s.implicits._
 import org.http4s.server.staticcontent._
+import org.http4s.server.middleware._
 import org.http4s.server.blaze.BlazeServerBuilder
 import org.http4s.server.Router
 import pureconfig._
@@ -17,7 +18,7 @@ object Main extends IOApp.Simple {
     val server = for {
       blocker <- Blocker[IO]
 
-      val static = Static[IO](blocker).routes
+      val static = GZip(Static[IO](blocker).routes)
       val hello = Hello[IO].routes
 
       val service = Router("/hello" -> hello, "/" -> static).orNotFound
