@@ -19,6 +19,14 @@ lazy val backend = (project in file("backend"))
     scalaJSProjects := Seq(frontend),
     Assets / pipelineStages := Seq(scalaJSPipeline),
     Compile / compile := ((Compile / compile) dependsOn scalaJSPipeline).value,
+    assembly / assemblyMergeStrategy := {
+      case PathList("application.conf") => MergeStrategy.discard
+      case PathList("application.prod.conf") => new RenameConfigStrategy()
+      case x => {
+        val old = (assembly / assemblyMergeStrategy).value
+        old(x)
+      }
+    }
   )
   .dependsOn(common.jvm)
 
