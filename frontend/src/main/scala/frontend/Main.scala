@@ -1,4 +1,4 @@
-package main
+package frontend
 
 import org.scalajs.dom
 import scala.concurrent._

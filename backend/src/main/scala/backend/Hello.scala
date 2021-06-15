@@ -1,12 +1,11 @@
-package main
+package backend
 
-import org.http4s.HttpRoutes
+import cats.effect._
+import org.http4s._
+import org.http4s.implicits._
 import org.http4s.dsl.Http4sDsl
-import cats.effect.Sync
-import cats.MonadError
-import org.http4s.StaticFile
-import cats.effect.Blocker
-import cats.effect.ContextShift
+
+import common._
 
 trait Hello[F[_]] {
   def routes: HttpRoutes[F]

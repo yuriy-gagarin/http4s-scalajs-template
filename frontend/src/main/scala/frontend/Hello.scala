@@ -1,4 +1,4 @@
-package main
+package frontend
 
 import org.scalajs.dom
 import japgolly.scalajs.react._
@@ -6,6 +6,8 @@ import japgolly.scalajs.react.vdom.html_<^._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.Success
 import scala.util.Failure
+
+import common.Common
 
 object Hello {
 

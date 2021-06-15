@@ -2,8 +2,8 @@ import Dependencies._
 
 ThisBuild / scalaVersion     := "2.13.5"
 ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+ThisBuild / organization     := "com.github.yuriygagarin"
+ThisBuild / organizationName := "yuriygagarin"
 
 lazy val common = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure) in file ("common"))
   .settings(
@@ -12,21 +12,12 @@ lazy val common = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pur
   )
 
 lazy val backend = (project in file("backend"))
-  .enablePlugins(WebScalaJSBundlerPlugin, Http4sWebPlugin)
+  .enablePlugins(WebScalaJSBundlerPlugin, Http4sWebPlugin, JavaAppPackaging)
   .settings(
     name := "backend",
     libraryDependencies ++= Dependencies.jvm.value ++ Dependencies.shared.value,
     scalaJSProjects := Seq(frontend),
-    Assets / pipelineStages := Seq(scalaJSPipeline),
-    Compile / compile := ((Compile / compile) dependsOn scalaJSPipeline).value,
-    assembly / assemblyMergeStrategy := {
-      case PathList("application.conf") => MergeStrategy.discard
-      case PathList("application.prod.conf") => new RenameConfigStrategy()
-      case x => {
-        val old = (assembly / assemblyMergeStrategy).value
-        old(x)
-      }
-    }
+    Assets / pipelineStages := Seq(scalaJSPipeline)
   )
   .dependsOn(common.jvm)
 
@@ -43,8 +34,6 @@ lazy val frontend = (project in file("frontend"))
   )
   .dependsOn(common.js)
 
-Global / onLoad := (Command.process("project backend", _)) compose (Global / onLoad).value
-
 Global / scalaJSStage := {
-  if (sys.env.get("FULLOPT").fold(false)(_ == "true")) FullOptStage else FastOptStage
+  if (sys.env.get("SCALAJS_FULLOPT").fold(false)(_ == "true")) FullOptStage else FastOptStage
 }

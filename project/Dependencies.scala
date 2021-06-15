@@ -2,11 +2,11 @@ import sbt._
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 
 object Dependencies {
-
   val http4sVersion = "0.21.22"
 
   val shared = Def.setting(Seq(
     "org.typelevel" %% "cats-core" % "2.3.0",
+    "org.typelevel" %% "cats-kernel" % "2.3.0",
     compilerPlugin("org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full),
     compilerPlugin("com.olegpy"    %% "better-monadic-for" % "0.3.1")
   ))
@@ -26,5 +26,4 @@ object Dependencies {
     "com.github.japgolly.scalajs-react" %%% "core" % "1.7.7",
     "com.github.japgolly.scalajs-react" %%% "extra" % "1.7.7"
   ))
-
 }
