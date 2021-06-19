@@ -16,6 +16,7 @@ object Hello {
 
     def routes: HttpRoutes[F] = HttpRoutes.of {
       case GET -> Root => Ok(Common.hello)
+      case req @ POST -> Root => Ok(req.body)
     }
   }
 }
