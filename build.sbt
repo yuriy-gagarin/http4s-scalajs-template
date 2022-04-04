@@ -28,8 +28,8 @@ lazy val frontend = (project in file("frontend"))
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies ++= Dependencies.js.value ++ Dependencies.shared.value,
     Compile / npmDependencies ++= Seq(
-      "react" -> "17.0.2",
-      "react-dom" -> "17.0.2"
+      "react" -> "18.0.0",
+      "react-dom" -> "18.0.0"
     )
   )
   .dependsOn(common.js)
